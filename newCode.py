@@ -108,18 +108,19 @@ class RobotController:
     reference_width = 1366
     reference_height = 768
     reference_geometries = {
-        "Feed": (362, 113, 550, 318),
-        "feedTitle": (362, 68, 550, 36),
+        "Feed": (312, 113, 620, 260),
+        "feedTitle": (312, 68, 620, 36),
+        "refreshFeedBtn": (547, 390, 150, 42),
         "armTitle": (960, 96, 80, 40),
         "elbowTitle": (1035, 96, 105, 40),
         "armSlider": (972, 145, 54, 280),
         "elbowSlider": (1055, 145, 54, 280),
         "turnTitle": (905, 425, 275, 28),
         "turnSlider": (910, 450, 270, 64),
-        "upBtn": (140, 459, 100, 100),
-        "leftBtn": (37, 549, 100, 100),
-        "rightBtn": (241, 549, 100, 100),
-        "downBtn": (140, 641, 100, 100),
+        "upBtn": (162, 502, 56, 56),
+        "leftBtn": (80, 574, 56, 56),
+        "rightBtn": (244, 574, 56, 56),
+        "downBtn": (162, 646, 56, 56),
         "portNameEdit": (410, 460, 360, 56),
         "reconnBtn": (797, 458, 54, 60),
         "bluetoothLabel": (410, 529, 180, 35),
@@ -141,7 +142,7 @@ class RobotController:
         self.button_direction = None
 
         script_dir = Path(__file__).resolve().parent
-        ui_file = QFile(str(script_dir / "app.ui"))
+        ui_file = QFile(str(script_dir / "WebApp" / "app.ui"))
         if not ui_file.open(QIODevice.OpenModeFlag.ReadOnly):
             raise RuntimeError(f"Unable to open the UI file: {ui_file.fileName()}")
         try:
@@ -173,6 +174,9 @@ class RobotController:
         feed_layout.setCurrentWidget(self.feed_placeholder)
         self.feed_layout = feed_layout
         self.web_view.loadFinished.connect(self.on_camera_load_finished)
+        self.require_widget(QPushButton, "refreshFeedBtn").clicked.connect(
+            self.web_view.reload
+        )
 
         self.arm_slider.valueChanged.connect(self.update_arm)
         self.elbow_slider.valueChanged.connect(self.update_elbow)
@@ -324,10 +328,10 @@ class RobotController:
             QPushButton#rightBtn {
                 background-color: #f7fbf7;
                 border: 2px solid #75a982;
-                border-radius: 50px;
+                border-radius: 28px;
                 color: #267744;
                 font-family: "Segoe UI Symbol";
-                font-size: 36px;
+                font-size: 22px;
                 font-weight: 400;
                 padding: 0;
             }
