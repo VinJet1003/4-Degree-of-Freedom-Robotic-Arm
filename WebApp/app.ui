@@ -16,9 +16,9 @@
   <widget class="QLabel" name="feedTitle">
    <property name="geometry">
     <rect>
-     <x>362</x>
+     <x>312</x>
      <y>68</y>
-     <width>550</width>
+     <width>620</width>
      <height>36</height>
     </rect>
    </property>
@@ -32,10 +32,10 @@
   <widget class="QWidget" name="Feed" native="true">
    <property name="geometry">
     <rect>
-     <x>362</x>
+     <x>312</x>
      <y>113</y>
-     <width>550</width>
-     <height>318</height>
+     <width>620</width>
+     <height>260</height>
     </rect>
    </property>
    <widget class="QLabel" name="feedPlaceholder">
@@ -43,8 +43,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>550</width>
-      <height>318</height>
+      <width>620</width>
+      <height>260</height>
      </rect>
     </property>
     <property name="text">
@@ -57,6 +57,22 @@
      <bool>true</bool>
     </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="refreshFeedBtn">
+   <property name="geometry">
+    <rect>
+     <x>547</x>
+     <y>390</y>
+     <width>150</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Refresh Feed</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload the camera feed</string>
+   </property>
   </widget>
   <widget class="QLabel" name="armTitle">
    <property name="geometry">
@@ -175,10 +191,10 @@
   <widget class="QPushButton" name="upBtn">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>459</y>
-     <width>100</width>
-     <height>100</height>
+     <x>162</x>
+     <y>502</y>
+     <width>56</width>
+     <height>56</height>
     </rect>
    </property>
    <property name="text">
@@ -188,10 +204,10 @@
   <widget class="QPushButton" name="leftBtn">
    <property name="geometry">
     <rect>
-     <x>37</x>
-     <y>549</y>
-     <width>100</width>
-     <height>100</height>
+     <x>80</x>
+     <y>574</y>
+     <width>56</width>
+     <height>56</height>
     </rect>
    </property>
    <property name="text">
@@ -201,10 +217,10 @@
   <widget class="QPushButton" name="rightBtn">
    <property name="geometry">
     <rect>
-     <x>241</x>
-     <y>549</y>
-     <width>100</width>
-     <height>100</height>
+     <x>244</x>
+     <y>574</y>
+     <width>56</width>
+     <height>56</height>
     </rect>
    </property>
    <property name="text">
@@ -214,10 +230,10 @@
   <widget class="QPushButton" name="downBtn">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>641</y>
-     <width>100</width>
-     <height>100</height>
+     <x>162</x>
+     <y>646</y>
+     <width>56</width>
+     <height>56</height>
     </rect>
    </property>
    <property name="text">
