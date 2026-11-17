@@ -3,7 +3,8 @@ import sys
 from pathlib import Path
 from typing import TypeVar
 
-from PySide6.QtCore import QEvent, QFile, QObject, QIODevice, Qt, QUrl
+from PySide6.QtCore import QEvent, QFile, QObject, QIODevice, QRegularExpression, Qt, QUrl
+from PySide6.QtGui import QRegularExpressionValidator
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
@@ -117,10 +118,12 @@ class RobotController:
         "elbowSlider": (1055, 145, 54, 280),
         "turnTitle": (905, 425, 275, 28),
         "turnSlider": (910, 450, 270, 64),
-        "upBtn": (162, 502, 56, 56),
-        "leftBtn": (80, 574, 56, 56),
-        "rightBtn": (244, 574, 56, 56),
-        "downBtn": (162, 646, 56, 56),
+        "upBtn": (132, 502, 56, 56),
+        "leftBtn": (50, 574, 56, 56),
+        "rightBtn": (214, 574, 56, 56),
+        "downBtn": (132, 646, 56, 56),
+        "wheelSpeedTitle": (290, 640, 197, 28),
+        "wheelSpeedInput": (410, 640, 72, 28),
         "portNameEdit": (410, 460, 360, 56),
         "reconnBtn": (797, 458, 54, 60),
         "bluetoothLabel": (410, 529, 180, 35),
@@ -156,6 +159,13 @@ class RobotController:
         self.elbow_slider = self.require_widget(QSlider, "elbowSlider")
         self.turn_slider = self.require_widget(QSlider, "turnSlider")
         self.port_edit = self.require_widget(QLineEdit, "portNameEdit")
+        self.wheel_speed_input = self.require_widget(QLineEdit, "wheelSpeedInput")
+        self.wheel_speed_input.setMaxLength(3)
+        self.wheel_speed_input.setValidator(
+            QRegularExpressionValidator(
+                QRegularExpression(r"(?:[0-9]{0,2}|100)"), self.wheel_speed_input
+            )
+        )
         self.connection_status = self.require_widget(QLabel, "connectionStatus")
         self.turn_status = self.require_widget(QLabel, "turnStatus")
         self.arm_status = self.require_widget(QLabel, "armValue")
@@ -220,180 +230,11 @@ class RobotController:
 
     @staticmethod
     def stylesheet():
-        return """
-            QWidget {
-                background-color: #eff5ef;
-                color: #203b29;
-                font-family: Arial;
-                font-size: 12px;
-            }
-            QWidget#Feed {
-                background-color: #dcebe0;
-                border: 2px solid #3e7950;
-                border-radius: 12px;
-            }
-            QLabel#feedPlaceholder {
-                background-color: #dcebe0;
-                color: #36734a;
-                font-size: 15px;
-                font-weight: 700;
-            }
-            QLabel#feedTitle {
-                background: transparent;
-                color: #245f37;
-                font-size: 17px;
-                font-weight: 700;
-            }
-            QLabel#turnTitle, QLabel#armTitle, QLabel#elbowTitle {
-                background-color: #e0eee2;
-                border: 1px solid #bed8c2;
-                border-radius: 6px;
-                color: #245f37;
-                font-size: 14px;
-                font-weight: 700;
-                padding: 3px;
-            }
-            QLabel#turnStatus, QLabel#armValue, QLabel#elbowValue {
-                background-color: #e5f1e7;
-                border: 1px solid #c6ddca;
-                border-radius: 8px;
-                color: #237b40;
-                font-size: 11px;
-                font-weight: 700;
-                padding-left: 8px;
-            }
-            QLabel#connectionStatus {
-                background-color: #fff3d8;
-                border: 1px solid #e6ca82;
-                border-radius: 8px;
-                color: #8a6413;
-                font-size: 10px;
-                font-weight: 700;
-            }
-            QLabel#connectionStatus[connected="true"] {
-                background-color: #d6efdc;
-                border-color: #75b985;
-                color: #1f7138;
-            }
-            QLabel#cameraStatus, QLabel#gripStatus {
-                background: transparent;
-            }
-            QLineEdit {
-                background-color: #fbfdfb;
-                border: 1px solid #7eaa86;
-                border-radius: 8px;
-                color: #203b29;
-                padding: 5px 9px;
-                selection-background-color: #a7d6b1;
-            }
-            QLineEdit:focus {
-                border: 2px solid #329456;
-            }
-            QLabel#bluetoothLabel, QLabel#comPortLabel {
-                background: transparent;
-                color: #245f37;
-                font-size: 13px;
-                font-weight: 700;
-            }
-            QPushButton {
-                background-color: #d3e9d7;
-                border: 1px solid #438052;
-                border-radius: 8px;
-                color: #205a32;
-                font-weight: 700;
-                padding: 4px 8px;
-            }
-            QPushButton:hover {
-                background-color: #c0e0c8;
-                border-color: #267744;
-            }
-            QPushButton:pressed {
-                background-color: #a9d2b3;
-            }
-            QPushButton#reconnBtn {
-                background-color: #cbe7d1;
-                border: 1px solid #398050;
-                border-radius: 10px;
-                color: #205a32;
-                font-family: "Segoe UI Symbol";
-                font-size: 24px;
-                padding: 0;
-            }
-            QPushButton#reconnBtn[connected="true"] {
-                background-color: #318b4d;
-                border-color: #236f3b;
-                color: #ffffff;
-            }
-            QPushButton#upBtn, QPushButton#downBtn, QPushButton#leftBtn,
-            QPushButton#rightBtn {
-                background-color: #f7fbf7;
-                border: 2px solid #75a982;
-                border-radius: 28px;
-                color: #267744;
-                font-family: "Segoe UI Symbol";
-                font-size: 22px;
-                font-weight: 400;
-                padding: 0;
-            }
-            QPushButton#upBtn:hover, QPushButton#downBtn:hover,
-            QPushButton#leftBtn:hover, QPushButton#rightBtn:hover {
-                background-color: #dcefe0;
-                border-color: #398050;
-            }
-            QPushButton#gripBtn {
-                background-color: #e8ece8;
-                border-color: #87968a;
-                color: #46564a;
-            }
-            QPushButton#gripBtn[gripState="in"] {
-                background-color: #cbe7d1;
-                border-color: #398050;
-                color: #205a32;
-            }
-            QPushButton#gripBtn[gripState="in"]:hover {
-                background-color: #b9ddc0;
-                border-color: #267744;
-            }
-            QPushButton#gripBtn[gripState="out"] {
-                background-color: #f4e0df;
-                border-color: #b45b55;
-                color: #8a302b;
-            }
-            QPushButton#gripBtn[gripState="out"]:hover {
-                background-color: #edcecb;
-                border-color: #99453f;
-            }
-            QPushButton#gripBtn {
-                border-radius: 51px;
-                font-size: 16px;
-            }
-            QSlider::groove:vertical {
-                background-color: #d5e8d8;
-                border: 1px solid #5b9669;
-                border-radius: 8px;
-                width: 18px;
-            }
-            QSlider::handle:vertical {
-                background-color: #319453;
-                border: 2px solid #f8fff9;
-                border-radius: 8px;
-                height: 20px;
-                margin: 0 -9px;
-            }
-            QSlider::groove:horizontal {
-                background-color: #d5e8d8;
-                border: 1px solid #5b9669;
-                border-radius: 8px;
-                height: 16px;
-            }
-            QSlider::handle:horizontal {
-                background-color: #319453;
-                border: 2px solid #f8fff9;
-                border-radius: 8px;
-                width: 20px;
-                margin: -10px 0;
-            }
-        """
+        stylesheet_file = Path(__file__).resolve().parent / "WebApp" / "theme.qss"
+        try:
+            return stylesheet_file.read_text(encoding="utf-8")
+        except OSError as error:
+            raise RuntimeError(f"Unable to read stylesheet: {stylesheet_file}") from error
 
     def toggle_connection(self):
         if self.serial_connection is not None:
